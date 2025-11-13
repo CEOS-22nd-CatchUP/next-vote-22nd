@@ -17,7 +17,7 @@ export default function Login() {
                 placeholder="비밀번호를 입력해 주세요"
               />
             </div>
-            <button className="bg-foreground h-16 w-[550px] text-white">로그인하기</button>
+            <button className="bg-foreground text-background h-16 w-[550px]">로그인하기</button>
           </form>
         </div>
         <div className="mt-5.5">
