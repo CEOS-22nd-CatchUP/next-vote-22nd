@@ -1,7 +1,3 @@
 export default function Home() {
-  return (
-    <div>
-      <main>메인 페이지 입니다</main>
-    </div>
-  );
+  return <div>{/* <main>CEOS 2025 AWARD</main> */}</div>;
 }

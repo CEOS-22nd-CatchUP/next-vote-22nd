@@ -48,29 +48,27 @@ export default async function PartVoteResultPage({ params }: partName) {
   const highestCount = candidateList[0]?.count || 0;
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="flex flex-col">
-        <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 결과보기</h1>
-        <div className={`mb-5 grid w-[80dvw] gap-4 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
-          {candidateList.map(({ name, count }) => (
-            <div
-              key={name}
-              className={`border-foreground flex items-center justify-center rounded-lg border-2 p-4 text-center text-lg font-medium ${count === highestCount ? 'bg-yellow-400' : ''}`}
-            >
-              {name} ({count})
-            </div>
-          ))}
-        </div>
-        <div className="text-gray-1 flex flex-col items-end gap-0.5">
-          <Link href="/">
-            <span>홈 페이지로 </span>
-            <span>&gt;&gt;</span>
-          </Link>
-          <Link href="/vote">
-            <span>투표 메인 페이지로 </span>
-            <span>&gt;&gt;</span>
-          </Link>
-        </div>
+    <div className="flex flex-col">
+      <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 결과보기</h1>
+      <div className={`mb-5 grid w-[80dvw] gap-4 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
+        {candidateList.map(({ name, count }) => (
+          <div
+            key={name}
+            className={`border-foreground flex items-center justify-center rounded-lg border-2 p-4 text-center text-lg font-medium ${count === highestCount ? 'bg-yellow-400' : ''}`}
+          >
+            {name} ({count})
+          </div>
+        ))}
+      </div>
+      <div className="text-gray-1 flex flex-col items-end gap-0.5">
+        <Link href="/">
+          <span>홈 페이지로 </span>
+          <span>&gt;&gt;</span>
+        </Link>
+        <Link href="/vote">
+          <span>투표 메인 페이지로 </span>
+          <span>&gt;&gt;</span>
+        </Link>
       </div>
     </div>
   );
