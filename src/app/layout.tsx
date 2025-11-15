@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import TopNavbar from '@/components/TopNavbar';
-import './globals.css';
+import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'NEXT VOTE',
@@ -22,5 +22,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-// min-h-[calc(100vh-4rem)]
