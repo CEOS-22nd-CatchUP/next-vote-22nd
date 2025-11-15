@@ -1,5 +1,5 @@
 import Link from 'next/link';
-type Props = { params: { part: string } };
+import { partNames } from '@/constants/partCategories';
 
 // 임시 데이터
 const candidates = {
@@ -8,13 +8,7 @@ const candidates = {
   demo: ['CatchUp', 'DiggIndie', 'Menual', 'Modelly', 'STORIX'],
 };
 
-const partNames: Record<string, string> = {
-  front: 'FE',
-  back: 'BE',
-  demo: 'DEMODAY',
-};
-
-export default async function PartVotePage({ params }: Props) {
+export default async function PartVotePage({ params }: partName) {
   const resolvedParams = await params;
   const { part } = resolvedParams;
 
