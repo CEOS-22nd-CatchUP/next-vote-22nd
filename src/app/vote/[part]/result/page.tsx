@@ -36,7 +36,7 @@ const candidates = {
   ],
 };
 
-export default async function PartVoteResultPage({ params }: partName) {
+export default async function PartVoteResultPage({ params }: { params: Promise<{ part: string }> }) {
   const resolvedParams = await params;
   const { part } = resolvedParams;
 
@@ -55,7 +55,7 @@ export default async function PartVoteResultPage({ params }: partName) {
           {candidateList.map(({ name, count }) => (
             <div
               key={name}
-              className={`border-foreground flex items-center justify-center rounded-lg border-2 p-4 text-center text-lg font-medium ${count == highestCount ? 'bg-yellow-400' : ''}`}
+              className={`border-foreground flex items-center justify-center rounded-lg border-2 p-4 text-center text-lg font-medium ${count === highestCount ? 'bg-yellow-400' : ''}`}
             >
               {name} ({count})
             </div>
