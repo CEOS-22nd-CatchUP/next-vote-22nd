@@ -11,15 +11,12 @@ export default function VoteMainPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="flex w-[80dvw] justify-between whitespace-nowrap">
         {voteCategories.map((category) => (
-          <div>
+          <div key={category.name}>
             <div className="mx-[1vw] -mb-[1.5px] flex justify-between">
               <div className="h-[2vw] w-[3vw] rounded-t-full border-2"></div>
               <div className="h-[2vw] w-[3vw] rounded-t-full border-2"></div>
             </div>
-            <div
-              key={category.name}
-              className="border-foreground mb-2 w-full rounded-lg border-2 px-[5vw] py-[7vw] text-center text-lg font-medium"
-            >
+            <div className="border-foreground mb-2 w-full rounded-lg border-2 px-[5vw] py-[7vw] text-center text-lg font-medium">
               {category.name}
             </div>
             <div className="flex w-full flex-col gap-1">
