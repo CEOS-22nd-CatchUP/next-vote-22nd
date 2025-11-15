@@ -1,2 +1,4 @@
-// front, back, deomday (url parameter)
-type partName = { params: { part: string } };
+// front, back, demoday (url parameter)
+type partName = {
+  params: Promise<{ part: string }>;
+};

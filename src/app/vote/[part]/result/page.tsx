@@ -36,7 +36,7 @@ const candidates = {
   ],
 };
 
-export default async function PartVoteResultPage({ params }: { params: Promise<{ part: string }> }) {
+export default async function PartVoteResultPage({ params }: partName) {
   const resolvedParams = await params;
   const { part } = resolvedParams;
 
