@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { partNames } from '@/constants/partCategories';
+import VoteSelector from '@/components/vote/VoteSelector';
 
 // 임시 데이터
 const candidates = {
@@ -16,17 +17,13 @@ export default async function PartVotePage({ params }: partName) {
 
   return (
     <div className="flex flex-col">
+      {/* 주제 */}
       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 투표하기</h1>
-      <div className={`mb-5 grid w-[80dvw] gap-4 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
-        {candidateList.map((name) => (
-          <div
-            key={name}
-            className="border-foreground flex cursor-pointer items-center justify-center rounded-lg border-2 p-4 text-center text-lg font-medium"
-          >
-            {name}
-          </div>
-        ))}
-      </div>
+
+      {/* 후보자 렌더링 컴포넌트 */}
+      <VoteSelector candidates={candidateList} part={part} />
+
+      {/* 버튼 */}
       <div className="text-gray-1 flex justify-between">
         <Link href="/vote">
           <span>&lt;&lt; </span>

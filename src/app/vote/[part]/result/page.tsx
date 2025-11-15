@@ -49,7 +49,10 @@ export default async function PartVoteResultPage({ params }: partName) {
 
   return (
     <div className="flex flex-col">
+      {/* 주제 */}
       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 결과보기</h1>
+
+      {/* 결과 */}
       <div className={`mb-5 grid w-[80dvw] gap-4 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
         {candidateList.map(({ name, count }) => (
           <div
@@ -60,6 +63,8 @@ export default async function PartVoteResultPage({ params }: partName) {
           </div>
         ))}
       </div>
+
+      {/* 버튼 */}
       <div className="text-gray-1 flex flex-col items-end gap-0.5">
         <Link href="/">
           <span>홈 페이지로 </span>
