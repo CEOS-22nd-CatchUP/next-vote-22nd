@@ -24,11 +24,14 @@ export default async function PartVotePage({ params }: partName) {
       <VoteSelector candidates={candidateList} part={part} />
 
       {/* 버튼 */}
-      <div className="text-gray-1 flex justify-between">
+      <div className="text-gray-1 mt-2 flex items-center justify-between whitespace-nowrap">
         <Link href="/vote">
           <span>&lt;&lt; </span>
           <span>이전 페이지로</span>
         </Link>
+        <div className="border-foreground text-foreground mx-20 flex-1 cursor-pointer rounded-lg border-2 p-4 text-center text-lg font-medium">
+          투표하기
+        </div>
         <Link href={`${part}/result`}>
           <span>결과보기 </span>
           <span>&gt;&gt;</span>

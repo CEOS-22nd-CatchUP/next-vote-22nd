@@ -26,7 +26,7 @@ const VoteSelector = ({ candidates, part }: { candidates: string[]; part: string
   };
 
   return (
-    <div className={`mb-5 grid w-[80dvw] gap-4 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
+    <div className={`mx-auto mb-5 grid w-[80dvw] gap-4 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
       {candidates.map((name) => {
         const isSelected = selected === name;
 
