@@ -17,7 +17,7 @@ export default function RootLayout({
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <body className="flex min-h-screen flex-col">
         <TopNavbar />
-        <div className="flex flex-1 items-center justify-center">{children}</div>
+        <div className="my-10 flex flex-1 items-center justify-center overflow-y-auto">{children}</div>
       </body>
     </html>
   );
