@@ -53,7 +53,7 @@ export default async function PartVoteResultPage({ params }: partName) {
       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 결과보기</h1>
 
       {/* 결과 */}
-      <div className={`mb-5 grid w-[80dvw] gap-4 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
+      <div className={`mb-5 grid w-[80dvw] gap-4 xl:w-250 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
         {candidateList.map(({ name, count }) => (
           <div
             key={name}
