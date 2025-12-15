@@ -24,8 +24,8 @@ export default async function PartVotePage({ params }: partName) {
       <VoteSelector candidates={candidateList} part={part} />
 
       {/* 버튼 */}
-      <div className="text-gray-1 flex flex-col gap-4">
-        <div className="border-foreground bg-foreground text-background mx-auto w-[80dvw] cursor-pointer rounded-xl py-4 text-center text-lg font-semibold">
+      <div className="text-gray-1 flex flex-col gap-4 xl:w-250">
+        <div className="border-foreground bg-foreground text-background mx-auto w-[80dvw] cursor-pointer rounded-xl py-4 text-center text-lg font-semibold xl:w-250">
           투표하기
         </div>
         <div className="flex items-center justify-between text-sm sm:text-base">
