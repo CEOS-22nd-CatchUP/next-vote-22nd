@@ -15,7 +15,7 @@ export default function VoteMainPage() {
   const votedStatus: Record<string, boolean> = {
     front: false,
     back: true,
-    demo: false,
+    demo: true,
   };
 
   const filteredCategories = voteCategories.filter((category) => {
