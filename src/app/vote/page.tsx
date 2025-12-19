@@ -10,12 +10,18 @@ export default function VoteMainPage() {
 
   // 테스트용 데이터
   const isLoggedIn = true;
+  const userPart = 'back';
 
   const votedStatus: Record<string, boolean> = {
     front: false,
     back: true,
     demo: false,
   };
+
+  const filteredCategories = voteCategories.filter((category) => {
+    if (category.part === 'demo') return true;
+    return category.part === userPart;
+  });
 
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -28,6 +34,15 @@ export default function VoteMainPage() {
       router.push('/login');
     });
     setAlertOpen(true);
+  };
+
+  // 투표하기 버튼 클릭
+  const handleVoteClick = (category: any) => {
+    if (!isLoggedIn) {
+      openLoginAlert();
+      return;
+    }
+    router.push(category.voteUrl);
   };
 
   // 결과보기 버튼 클릭
@@ -48,21 +63,12 @@ export default function VoteMainPage() {
     router.push(category.resultUrl);
   };
 
-  // 투표하기 버튼 클릭
-  const handleVoteClick = (category: any) => {
-    if (!isLoggedIn) {
-      openLoginAlert();
-      return;
-    }
-    router.push(category.voteUrl);
-  };
-
   return (
-    <div className="grid max-h-[85dvh] w-[60dvw] grid-cols-1 gap-8 whitespace-nowrap md:my-5 md:w-[80dvw] md:grid-cols-3 md:gap-6 xl:w-250 xl:gap-7.5">
-      {voteCategories.map((category) => (
+    <div className="grid max-h-[85dvh] w-[60dvw] grid-cols-1 gap-10 whitespace-nowrap md:my-5 md:w-[80dvw] md:grid-cols-2 md:gap-10 xl:w-250 xl:gap-20">
+      {filteredCategories.map((category) => (
         <div key={category.name} className="flex flex-col items-center">
           {/* 카테고리 */}
-          <div className="border-foreground mb-2 w-full rounded-lg border-2 py-10 text-center text-lg font-medium md:px-[5vw] md:py-[7vw] xl:px-12.5 xl:py-22.5 xl:text-xl">
+          <div className="border-foreground mb-2 w-full rounded-lg border-2 py-10 text-center text-lg font-medium md:px-[5vw] md:py-[8vw] xl:px-12.5 xl:py-24 xl:text-xl">
             {category.name}
           </div>
 
