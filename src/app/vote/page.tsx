@@ -5,16 +5,13 @@ import { useRouter } from 'next/navigation';
 import { voteCategories } from '@/constants/partCategories';
 import Alert from '@/components/vote/Alert';
 import { authApi } from 'src/apis/api';
+import { voteApi } from '@/apis/voteApi';
 
 export default function VoteMainPage() {
   const router = useRouter();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userPart, setUserPart] = useState<'FRONTEND' | 'BACKEND' | null>(null);
-  // const [votedStatus, setVotedStatus] = useState<{ team: boolean; partLead: boolean }>({
-  //   team: false,
-  //   partLead: false,
-  // });
   const [isLoading, setIsLoading] = useState(true);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -53,23 +50,40 @@ export default function VoteMainPage() {
   };
 
   // 결과보기 버튼 클릭
-  const handleResultClick = (category: any) => {
+  const handleResultClick = async (category: any) => {
     if (!isLoggedIn) {
       openLoginAlert();
       return;
     }
 
-    //   const votedKey = category.part === 'front' ? 'partLead' : 'team';
+    try {
+      const voteStatus = await voteApi.getVoteStatus();
 
-    //   if (!votedStatus[votedKey]) {
-    //     setAlertMessage('아직 투표하지 않은 항목입니다.\n투표 페이지로 이동하시겠습니까?');
-    //     setOnConfirmAction(() => () => {
-    //       router.push(category.voteUrl);
-    //     });
-    // setAlertOpen(true);
-    //     return;
-    //   }
-    router.push(category.resultUrl);
+      let hasVoted = false;
+      if (category.part === 'front') {
+        hasVoted = voteStatus.partLeadVote;
+      } else if (category.part === 'back') {
+        hasVoted = voteStatus.partLeadVote;
+      } else if (category.part === 'demo') {
+        hasVoted = voteStatus.teamVote;
+      }
+
+      if (!hasVoted) {
+        setAlertMessage('아직 투표하지 않은 항목입니다.\n투표 페이지로 이동하시겠습니까?');
+        setOnConfirmAction(() => () => {
+          router.push(category.voteUrl);
+        });
+        setAlertOpen(true);
+        return;
+      }
+
+      router.push(category.resultUrl);
+    } catch (err) {
+      console.error('투표 상태 조회 실패', err);
+      setAlertMessage('투표 상태를 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.');
+      setOnConfirmAction(() => () => setAlertOpen(false));
+      setAlertOpen(true);
+    }
   };
 
   // 유저 정보 가져오기
@@ -105,27 +119,8 @@ export default function VoteMainPage() {
     fetchUserInfo();
   }, []);
 
-  // // 투표 여부 가져오기
-  // useEffect(() => {
-  //   if (!isLoggedIn) return;
-
-  //   const fetchVotedStatus = async () => {
-  //     try {
-  //       const memberInfo = await memberApi.getUserInfo();
-  //       setVotedStatus({
-  //         team: memberInfo.hasVotedForTeam,
-  //         partLead: memberInfo.hasVotedForPartLead,
-  //       });
-  //     } catch (err) {
-  //       console.error('투표 여부 불러오기 실패', err);
-  //     }
-  //   };
-
-  //   fetchVotedStatus();
-  // }, [isLoggedIn]);
-
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return <div></div>;
   }
 
   // 로그인 여부에 따른 grid-cols 동적 설정 (투표 카테고리 렌더링)

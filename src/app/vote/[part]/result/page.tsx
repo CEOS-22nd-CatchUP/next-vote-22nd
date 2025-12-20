@@ -1,3 +1,96 @@
+// 'use client';
+
+// import { useEffect, useState } from 'react';
+// import Link from 'next/link';
+// import { partNames } from '@/constants/partCategories';
+// import { candidateApi } from '@/apis/candidateApi';
+// import { voteApi } from '@/apis/voteApi';
+
+// interface Props {
+//   part: string;
+// }
+
+// interface Candidate {
+//   name: string;
+//   count: number;
+// }
+
+// export default function PartVoteResultPage({ part }: Props) {
+//   const [candidateList, setCandidateList] = useState<Candidate[]>([]);
+//   const [highestCount, setHighestCount] = useState<number>(0);
+
+//   useEffect(() => {
+//     const fetchResults = async () => {
+//       try {
+//         if (part === 'demo') {
+//           const data = await voteApi.getVoteResults();
+//           const list = data.teamVoteResults.map((result) => ({
+//             name: result.targetName,
+//             count: result.voteCount,
+//           }));
+//           list.sort((a, b) => b.count - a.count);
+//           setCandidateList(list);
+//           setHighestCount(list[0]?.count || 0);
+//         } else {
+//           // 파트장 후보 필터링
+//           const [allCandidates, voteResults] = await Promise.all([
+//             candidateApi.getPartCandidates(),
+//             voteApi.getVoteResults(),
+//           ]);
+
+//           // 현재 part 후보만 필터링
+//           const filteredCandidates = allCandidates.filter((c) => {
+//             if (part === 'front') return c.part === 'FRONTEND';
+//             if (part === 'back') return c.part === 'BACKEND';
+//             return false;
+//           });
+
+//           // 후보와 투표 결과 매칭
+//           const list = filteredCandidates.map((c) => {
+//             const result = voteResults.partLeadVoteResults.find((r) => r.targetName === c.name);
+//             return {
+//               name: c.name,
+//               count: result?.voteCount || 0,
+//             };
+//           });
+
+//           list.sort((a, b) => b.count - a.count);
+//           setCandidateList(list);
+//           setHighestCount(list[0]?.count || 0);
+//         }
+//       } catch (err) {
+//         console.error('투표 결과 불러오기 실패', err);
+//       }
+//     };
+
+//     fetchResults();
+//   }, [part]);
+
+//   return (
+//     <div className="flex flex-col">
+//       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 결과보기</h1>
+
+//       <div className={`mb-5 grid w-[80dvw] gap-4 xl:w-250 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
+//         {candidateList.map(({ name, count }) => (
+//           <div
+//             key={name}
+//             className={`border-foreground flex items-center justify-center rounded-lg border-2 p-4 text-center text-lg font-medium whitespace-nowrap ${
+//               count === highestCount ? 'bg-yellow-400' : ''
+//             }`}
+//           >
+//             {name} ({count})
+//           </div>
+//         ))}
+//       </div>
+
+//       <div className="text-gray-1 flex flex-col items-end gap-0.5">
+//         <Link href="/">홈 페이지로 &gt;&gt;</Link>
+//         <Link href="/vote">투표 메인 페이지로 &gt;&gt;</Link>
+//       </div>
+//     </div>
+//   );
+// }
+
 import Link from 'next/link';
 import { partNames } from '@/constants/partCategories';
 
@@ -34,6 +127,10 @@ const candidates = {
     { name: 'Modelly', count: 1 },
     { name: 'STORIX', count: 1 },
   ],
+};
+
+type partName = {
+  params: Promise<{ part: string }>;
 };
 
 export default async function PartVoteResultPage({ params }: partName) {

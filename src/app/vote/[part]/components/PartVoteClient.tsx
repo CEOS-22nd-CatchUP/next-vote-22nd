@@ -49,7 +49,6 @@ export default function PartVoteClient({ part }: { part: string }) {
 
       setVoted(true);
       setAlertOpen(false);
-      // setSelected(null); // 이미 투표했으니 선택 초기화
     } catch (err) {
       console.error('투표 실패', err);
     }
@@ -67,7 +66,6 @@ export default function PartVoteClient({ part }: { part: string }) {
         } else {
           // 파트장
           const parts = await candidateApi.getPartCandidates();
-          // console.log('파트장 후보 원본:', parts);   // 테스트용
 
           const filtered = parts
             .filter((p) => {
