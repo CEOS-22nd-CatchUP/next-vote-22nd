@@ -67,7 +67,6 @@ export default function SignUp() {
             <ToggleButton value={formData.part} onChange={(val) => setFormData((prev) => ({ ...prev, part: val }))} />
           </div>
 
-          {/* 팀(Select) & 이름(Input) */}
           <div className="mb-14 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="hidden text-sm font-semibold md:block">팀</div>
             <select
@@ -98,7 +97,6 @@ export default function SignUp() {
             />
           </div>
 
-          {/* 아이디 */}
           <div className="mb-7 flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="mb-2 font-semibold md:mb-0">아이디</div>
             <input
@@ -111,7 +109,6 @@ export default function SignUp() {
             />
           </div>
 
-          {/* 이메일 */}
           <div className="mb-7 flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="mb-2 font-semibold md:mb-0">이메일</div>
             <input
@@ -125,7 +122,6 @@ export default function SignUp() {
             />
           </div>
 
-          {/* 비밀번호 */}
           <div className="mb-7 flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="mb-2 font-semibold md:mb-0">비밀번호</div>
             <input
@@ -139,7 +135,6 @@ export default function SignUp() {
             />
           </div>
 
-          {/* 비밀번호 재확인 */}
           <div className="mb-11 flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="mb-2 font-semibold md:mb-0">비밀번호 재확인</div>
             <input
@@ -162,7 +157,6 @@ export default function SignUp() {
   );
 }
 
-// ToggleButton 컴포넌트는 이전과 동일
 function ToggleButton({
   value,
   onChange,

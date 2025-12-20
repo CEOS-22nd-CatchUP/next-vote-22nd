@@ -1,7 +1,7 @@
 import ky from 'ky';
 
 export const api = ky.create({
-  prefixUrl: 'http://144.24.71.208:8080',
+  prefixUrl: '/api/proxy',
   headers: {
     'Content-Type': 'application/json',
   },
