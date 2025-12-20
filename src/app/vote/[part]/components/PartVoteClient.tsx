@@ -2,20 +2,16 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import VoteSelector from '@/components/vote/VoteSelector';
 import Alert from '@/components/vote/Alert';
 import { partNames } from '@/constants/partCategories';
-
-const candidates = {
-  front: ['김윤성', '백승선', '손주완', '신용섭', '이채연', '장자윤', '정성훈', '정윤지', '조성아', '최무헌'],
-  back: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-  demo: ['CatchUp', 'DiggIndie', 'Menual', 'Modelly', 'STORIX'],
-};
+import { authApi } from '@/apis/api';
+import { candidateApi } from '@/apis/candidateApi';
 
 export default function PartVoteClient({ part }: { part: string }) {
-  const candidateList = candidates[part as keyof typeof candidates] || [];
+  const [candidates, setCandidates] = useState<string[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [voted, setVoted] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -31,14 +27,50 @@ export default function PartVoteClient({ part }: { part: string }) {
     setAlertOpen(false);
   };
 
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      setIsLoading(true);
+
+      try {
+        // 데모데이
+        if (part === 'demo') {
+          const teams = await candidateApi.getTeamCandidates();
+          setCandidates(teams.map((team) => team.name));
+
+          return;
+        }
+
+        // 파트장
+        const parts = await candidateApi.getPartCandidates();
+        console.log('파트장 후보 원본:', parts);
+
+        const filtered = parts
+          .filter((p) => {
+            if (part === 'front') return p.part === 'FRONTEND';
+            if (part === 'back') return p.part === 'BACKEND';
+            return false;
+          })
+          .map((p) => p.name);
+
+        setCandidates(filtered);
+      } catch (err) {
+        console.error('후보 불러오기 실패', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCandidates();
+  }, [part]);
+
   return (
     <div className="flex flex-col">
       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 투표하기</h1>
 
       {isLoading ? (
-        <p className="text-center">로딩 중...</p>
+        <p className="text-center"></p>
       ) : (
-        <VoteSelector candidates={candidateList} selected={selected} onSelect={handleSelect} part={part} />
+        <VoteSelector candidates={candidates} selected={selected} onSelect={handleSelect} part={part} />
       )}
 
       <div className="flex flex-col gap-4 xl:w-250">
