@@ -12,11 +12,11 @@ const TopNavbar = () => {
           <Link href="/vote" className="cursor-pointer">
             VOTING
           </Link>
-          <Link href="/member" className="cursor-pointer">
-            MEMBERS
-          </Link>
           <Link href="/login" className="cursor-pointer">
             LOGIN
+          </Link>
+          <Link href="/signup" className="cursor-pointer">
+            SIGNUP
           </Link>
         </div>
       </div>
