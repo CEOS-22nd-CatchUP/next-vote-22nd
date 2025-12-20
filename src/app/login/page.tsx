@@ -28,6 +28,8 @@ export default function Login() {
 
       if (data.accessToken) {
         localStorage.setItem('accessToken', data.accessToken);
+        // console.log('로그인 성공'); // 테스트용
+        // console.log('유저 정보: ', await authApi.getUserInfo()); // 테스트용
         router.push('/');
       }
     } catch (error: any) {

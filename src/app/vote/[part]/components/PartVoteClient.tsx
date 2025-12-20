@@ -16,10 +16,10 @@ const candidates = {
 
 export default function PartVoteClient({ part }: { part: string }) {
   const candidateList = candidates[part as keyof typeof candidates] || [];
-
   const [selected, setSelected] = useState<string | null>(null);
   const [voted, setVoted] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSelect = (name: string) => {
     if (voted) return;
@@ -35,7 +35,11 @@ export default function PartVoteClient({ part }: { part: string }) {
     <div className="flex flex-col">
       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 투표하기</h1>
 
-      <VoteSelector candidates={candidateList} selected={selected} onSelect={handleSelect} part={part} />
+      {isLoading ? (
+        <p className="text-center">로딩 중...</p>
+      ) : (
+        <VoteSelector candidates={candidateList} selected={selected} onSelect={handleSelect} part={part} />
+      )}
 
       <div className="flex flex-col gap-4 xl:w-250">
         <button
