@@ -7,8 +7,8 @@ import Link from 'next/link';
 import VoteSelector from '@/components/vote/VoteSelector';
 import Alert from '@/components/vote/Alert';
 import { partNames } from '@/constants/partCategories';
-import { authApi } from '@/apis/api';
 import { candidateApi } from '@/apis/candidateApi';
+import { voteApi } from '@/apis/voteApi';
 
 export default function PartVoteClient({ part }: { part: string }) {
   const [candidates, setCandidates] = useState<string[]>([]);
@@ -22,13 +22,41 @@ export default function PartVoteClient({ part }: { part: string }) {
     setSelected((prev) => (prev === name ? null : name));
   };
 
-  const confirmVote = () => {
-    setVoted(true);
-    setAlertOpen(false);
+  const confirmVote = async () => {
+    if (!selected) return;
+
+    try {
+      if (part === 'demo') {
+        const teams = await candidateApi.getTeamCandidates();
+        const target = teams.find((t) => t.name === selected);
+        if (!target) throw new Error('선택 후보 없음');
+
+        await voteApi.voteTeam(target.id);
+      } else {
+        const parts = await candidateApi.getPartCandidates();
+        const target = parts.find((p) => p.name === selected);
+        if (!target) throw new Error('선택 후보 없음');
+
+        await voteApi.votePart(target.id);
+      }
+
+      // 테스트용
+      const status = await voteApi.getVoteStatus();
+      console.log('투표 상태: ', status);
+
+      const results = await voteApi.getVoteResults();
+      console.log('투표 결과: ', results);
+
+      setVoted(true);
+      setAlertOpen(false);
+      // setSelected(null); // 이미 투표했으니 선택 초기화
+    } catch (err) {
+      console.error('투표 실패', err);
+    }
   };
 
   useEffect(() => {
-    const fetchCandidates = async () => {
+    const fetchCandidatesAndStatus = async () => {
       setIsLoading(true);
 
       try {
@@ -36,23 +64,27 @@ export default function PartVoteClient({ part }: { part: string }) {
         if (part === 'demo') {
           const teams = await candidateApi.getTeamCandidates();
           setCandidates(teams.map((team) => team.name));
+        } else {
+          // 파트장
+          const parts = await candidateApi.getPartCandidates();
+          // console.log('파트장 후보 원본:', parts);   // 테스트용
 
-          return;
+          const filtered = parts
+            .filter((p) => {
+              if (part === 'front') return p.part === 'FRONTEND';
+              if (part === 'back') return p.part === 'BACKEND';
+              return false;
+            })
+            .map((p) => p.name);
+
+          setCandidates(filtered);
         }
 
-        // 파트장
-        const parts = await candidateApi.getPartCandidates();
-        console.log('파트장 후보 원본:', parts);
-
-        const filtered = parts
-          .filter((p) => {
-            if (part === 'front') return p.part === 'FRONTEND';
-            if (part === 'back') return p.part === 'BACKEND';
-            return false;
-          })
-          .map((p) => p.name);
-
-        setCandidates(filtered);
+        // 투표 상태
+        const status = await voteApi.getVoteStatus();
+        if ((part == 'demo' && status.teamVote) || (part !== 'demo' && status.partLeadVote)) {
+          setVoted(true);
+        }
       } catch (err) {
         console.error('후보 불러오기 실패', err);
       } finally {
@@ -60,7 +92,7 @@ export default function PartVoteClient({ part }: { part: string }) {
       }
     };
 
-    fetchCandidates();
+    fetchCandidatesAndStatus();
   }, [part]);
 
   return (
