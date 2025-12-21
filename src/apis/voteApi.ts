@@ -1,5 +1,5 @@
 import { api } from './api';
-import type { VoteStatus, VoteResults } from '@/types/vote';
+import type { VoteStatus, PartVoteResult, TeamVoteResult } from '@/types/vote';
 
 export const voteApi = {
   // 투표
@@ -10,5 +10,6 @@ export const voteApi = {
   getVoteStatus: () => api.get('api/votes/status').json<VoteStatus>(),
 
   // 투표 결과 조회
-  getVoteResults: () => api.get('api/votes/results').json<VoteResults>(),
+  getTeamResults: () => api.get('api/votes/results/teams').json<TeamVoteResult[]>(),
+  getPartResults: (part: string) => api.get(`api/votes/results/parts/${part}`).json<PartVoteResult[]>(),
 };

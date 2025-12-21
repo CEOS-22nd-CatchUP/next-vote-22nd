@@ -48,9 +48,6 @@ export default function PartVoteClient({ part }: { part: string }) {
       const status = await voteApi.getVoteStatus();
       console.log('투표 상태: ', status);
 
-      const results = await voteApi.getVoteResults();
-      console.log('투표 결과: ', results);
-
       setVoted(true);
       setAlertOpen(false);
     } catch (err) {
