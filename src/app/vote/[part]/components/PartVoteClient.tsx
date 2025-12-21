@@ -11,6 +11,7 @@ import { partNames } from '@/constants/partCategories';
 import { candidateApi } from '@/apis/candidateApi';
 import { voteApi } from '@/apis/voteApi';
 import { useAuthStore } from '@/store/useAuthStore';
+import VoteResultsSkeleton from '@/components/vote/VoteResultsSkeleton';
 
 export default function PartVoteClient({ part }: { part: string }) {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function PartVoteClient({ part }: { part: string }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [voted, setVoted] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const isAuth = isLoggedIn || (typeof window !== 'undefined' && !!localStorage.getItem('accessToken'));
 
@@ -45,10 +46,6 @@ export default function PartVoteClient({ part }: { part: string }) {
 
         await voteApi.votePart(target.id);
       }
-
-      // 테스트용
-      const status = await voteApi.getVoteStatus();
-      console.log('투표 상태: ', status);
 
       setVoted(true);
       setAlertOpen(false);
@@ -109,7 +106,7 @@ export default function PartVoteClient({ part }: { part: string }) {
       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 투표하기</h1>
 
       {isLoading ? (
-        <p className="text-center"></p>
+        <VoteResultsSkeleton part={part} />
       ) : (
         <VoteSelector candidates={candidates} selected={selected} onSelect={handleSelect} part={part} />
       )}

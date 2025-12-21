@@ -9,6 +9,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { partNames } from '@/constants/partCategories';
 import { voteApi } from '@/apis/voteApi';
 import type { PartVoteResult, TeamVoteResult } from '@/types/vote';
+import VoteResultsSkeleton from '@/components/vote/VoteResultsSkeleton';
 
 interface PartVoteResultClientProps {
   part: string;
@@ -60,7 +61,7 @@ export default function PartVoteResultClient({ part }: PartVoteResultClientProps
       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 결과보기</h1>
 
       {isLoading ? (
-        <p></p>
+        <VoteResultsSkeleton part={part} />
       ) : (
         <div className={`mb-5 grid w-[80dvw] gap-4 xl:w-250 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
           {candidateList.map((candidate) => (
