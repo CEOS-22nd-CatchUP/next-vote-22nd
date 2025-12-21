@@ -9,6 +9,8 @@ import { useAuthStore } from 'src/store/useAuthStore';
 export default function Login() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
+  const setUserInfo = useAuthStore((state) => state.setUserInfo);
+
   const [formData, setFormData] = useState({
     loginId: '',
     password: '',
@@ -31,6 +33,8 @@ export default function Login() {
       if (data.accessToken) {
         login(data.accessToken);
         localStorage.setItem('accessToken', data.accessToken);
+        const userInfo = await authApi.getUserInfo();
+        setUserInfo(userInfo);
         router.push('/');
       }
     } catch (error: any) {
