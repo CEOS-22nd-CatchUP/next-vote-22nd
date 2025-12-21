@@ -3,14 +3,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import VoteSelector from '@/components/vote/VoteSelector';
 import Alert from '@/components/vote/Alert';
 import { partNames } from '@/constants/partCategories';
 import { candidateApi } from '@/apis/candidateApi';
 import { voteApi } from '@/apis/voteApi';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function PartVoteClient({ part }: { part: string }) {
+  const router = useRouter();
+  const { isLoggedIn, user } = useAuthStore();
   const [candidates, setCandidates] = useState<string[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [voted, setVoted] = useState(false);
@@ -53,6 +57,13 @@ export default function PartVoteClient({ part }: { part: string }) {
       console.error('투표 실패', err);
     }
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 페이지입니다.');
+      router.push('/vote');
+    }
+  }, [isLoggedIn, router]);
 
   useEffect(() => {
     const fetchCandidatesAndStatus = async () => {

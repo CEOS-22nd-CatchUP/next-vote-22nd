@@ -4,13 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { voteCategories } from '@/constants/partCategories';
 import Alert from '@/components/vote/Alert';
-import { authApi } from 'src/apis/api';
 import { voteApi } from '@/apis/voteApi';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function VoteMainPage() {
   const router = useRouter();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, user } = useAuthStore();
   const [userPart, setUserPart] = useState<'FRONTEND' | 'BACKEND' | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -58,15 +57,10 @@ export default function VoteMainPage() {
 
     try {
       const voteStatus = await voteApi.getVoteStatus();
-
       let hasVoted = false;
-      if (category.part === 'front') {
-        hasVoted = voteStatus.partLeadVote;
-      } else if (category.part === 'back') {
-        hasVoted = voteStatus.partLeadVote;
-      } else if (category.part === 'demo') {
-        hasVoted = voteStatus.teamVote;
-      }
+
+      if (category.part === 'front' || category.part === 'back') hasVoted = voteStatus.partLeadVote;
+      else if (category.part === 'demo') hasVoted = voteStatus.teamVote;
 
       if (!hasVoted) {
         setAlertMessage('아직 투표하지 않은 항목입니다.\n투표 페이지로 이동하시겠습니까?');
@@ -86,38 +80,19 @@ export default function VoteMainPage() {
     }
   };
 
-  // 유저 정보 가져오기
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const token = localStorage.getItem('accessToken');
+    if (!user) {
+      setUserPart(null);
+    } else if (user.part === 'FRONT' || user.part === 'FRONTEND') {
+      setUserPart('FRONTEND');
+    } else if (user.part === 'BACK' || user.part === 'BACKEND') {
+      setUserPart('BACKEND');
+    } else {
+      setUserPart(null);
+    }
 
-      if (!token) {
-        setIsLoggedIn(false);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const userInfo = await authApi.getUserInfo();
-
-        setIsLoggedIn(true);
-
-        if (userInfo.part === 'FRONT' || userInfo.part === 'FRONTEND') {
-          setUserPart('FRONTEND');
-        } else if (userInfo.part === 'BACK' || userInfo.part === 'BACKEND') {
-          setUserPart('BACKEND');
-        }
-      } catch (err) {
-        console.error('유저 정보 로딩 실패', err);
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
+    setIsLoading(false);
+  }, [user]);
 
   if (isLoading) {
     return <div></div>;
