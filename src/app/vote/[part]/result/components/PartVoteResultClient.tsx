@@ -1,3 +1,5 @@
+// Client Component (카테고리별 투표 페이지)
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -18,15 +20,18 @@ export default function PartVoteResultClient({ part }: PartVoteResultClientProps
   const [candidateList, setCandidateList] = useState<PartVoteResult[] | TeamVoteResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const isAuth = isLoggedIn || (typeof window !== 'undefined' && !!localStorage.getItem('accessToken'));
+
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuth) {
       alert('로그인이 필요한 페이지입니다.');
       router.push('/vote');
     }
-  }, [isLoggedIn, router]);
+  }, [isAuth, router]);
 
   useEffect(() => {
     const fetchVoteResults = async () => {
+      if (!isAuth) return;
       setIsLoading(true);
 
       try {
@@ -46,7 +51,7 @@ export default function PartVoteResultClient({ part }: PartVoteResultClientProps
     };
 
     fetchVoteResults();
-  }, [part]);
+  }, [part, isAuth]);
 
   const highestCount = candidateList[0]?.voteCount || 0;
 
@@ -55,7 +60,7 @@ export default function PartVoteResultClient({ part }: PartVoteResultClientProps
       <h1 className="mb-10 text-center text-2xl font-bold">{partNames[part] || part} 결과보기</h1>
 
       {isLoading ? (
-        <p>로딩 중</p>
+        <p></p>
       ) : (
         <div className={`mb-5 grid w-[80dvw] gap-4 xl:w-250 ${part === 'demo' ? 'grid-cols-1' : 'grid-cols-2'}`}>
           {candidateList.map((candidate) => (

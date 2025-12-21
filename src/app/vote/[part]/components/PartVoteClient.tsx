@@ -14,12 +14,14 @@ import { useAuthStore } from '@/store/useAuthStore';
 
 export default function PartVoteClient({ part }: { part: string }) {
   const router = useRouter();
-  const { isLoggedIn, user } = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
   const [candidates, setCandidates] = useState<string[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [voted, setVoted] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isAuth = isLoggedIn || (typeof window !== 'undefined' && !!localStorage.getItem('accessToken'));
 
   const handleSelect = (name: string) => {
     if (voted) return;
@@ -56,14 +58,15 @@ export default function PartVoteClient({ part }: { part: string }) {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuth) {
       alert('로그인이 필요한 페이지입니다.');
       router.push('/vote');
     }
-  }, [isLoggedIn, router]);
+  }, [isAuth, router]);
 
   useEffect(() => {
     const fetchCandidatesAndStatus = async () => {
+      if (!isAuth) return;
       setIsLoading(true);
 
       try {
@@ -99,7 +102,7 @@ export default function PartVoteClient({ part }: { part: string }) {
     };
 
     fetchCandidatesAndStatus();
-  }, [part]);
+  }, [part, isAuth]);
 
   return (
     <div className="flex flex-col">

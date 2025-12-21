@@ -1,3 +1,5 @@
+// Server Component (투표결과 페이지)
+
 import PartVoteResultClient from './components/PartVoteResultClient';
 
 interface PageProps {
