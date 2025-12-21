@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { useAuthStore } from '@/store/useAuthStore';
 import { partNames } from '@/constants/partCategories';
 import { voteApi } from '@/apis/voteApi';
-import type { PartVoteResult, TeamVoteResult } from '@/types/vote';
 import VoteResultsSkeleton from '@/components/vote/VoteResultsSkeleton';
 
 interface PartVoteResultClientProps {

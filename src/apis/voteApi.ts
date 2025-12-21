@@ -1,5 +1,4 @@
 import { api } from './api';
-import type { VoteStatus, PartVoteResult, TeamVoteResult } from '@/types/vote';
 
 export const voteApi = {
   // 투표

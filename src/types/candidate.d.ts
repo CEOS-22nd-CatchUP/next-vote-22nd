@@ -1,10 +1,10 @@
-export interface PartCandidate {
+interface PartCandidate {
   id: number;
   name: string;
   part: string;
 }
 
-export interface TeamCandidate {
+interface TeamCandidate {
   id: number;
   name: string;
 }

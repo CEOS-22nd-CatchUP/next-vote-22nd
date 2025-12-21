@@ -1,15 +1,15 @@
-export interface VoteStatus {
+interface VoteStatus {
   teamVote: boolean;
   partLeadVote: boolean;
 }
 
-export interface PartVoteResult {
+interface PartVoteResult {
   targetId: number;
   targetName: string;
   voteCount: number;
 }
 
-export interface TeamVoteResult {
+interface TeamVoteResult {
   targetId: number;
   targetName: string;
   voteCount: number;

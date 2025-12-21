@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { authApi, SignUpRequest } from 'src/apis/api';
+import { authApi } from 'src/apis/authApi';
 
 export default function SignUp() {
   const router = useRouter();
