@@ -83,7 +83,7 @@ export default function SignUp() {
               <option value="Modelly">Modelly</option>
               <option value="CatchUp">CatchUp</option>
               <option value="Menual">Menual</option>
-              <option value="DiggIdie">DiggIndie</option>
+              <option value="DiggIndie">DiggIndie</option>
             </select>
 
             <div className="hidden text-sm font-semibold md:block">이름</div>
