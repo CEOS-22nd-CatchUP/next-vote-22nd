@@ -4,9 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { authApi } from 'src/apis/api';
+import { useAuthStore } from 'src/store/useAuthStore';
 
 export default function Login() {
   const router = useRouter();
+  const login = useAuthStore((state) => state.login);
   const [formData, setFormData] = useState({
     loginId: '',
     password: '',
@@ -27,6 +29,7 @@ export default function Login() {
       });
 
       if (data.accessToken) {
+        login(data.accessToken);
         localStorage.setItem('accessToken', data.accessToken);
         router.push('/');
       }
